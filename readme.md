@@ -4,13 +4,13 @@ Basic GoLang Webserver for serving Mithril and Tachyons for development testing
 
 Download the applications for your specific OS to the folder you want to serve over http
 
-Windows -> https://github.com/abbeydabiri/blob/master/webserver/webserver-win.exe <br/>
+Windows -> https://github.com/abbeydabiri/webserver/blob/master/webserver-win.exe <br/>
 
 
-Linux -> https://github.com/abbeydabiri/blob/master/webserver/webserver-linux.elf <br/>
+Linux -> https://github.com/abbeydabiri/webserver/blob/master/webserver-linux.elf <br/>
 
 
-Mac -> https://github.com/abbeydabiri/blob/master/webserver/webserver-mac.app <br/>
+Mac -> https://github.com/abbeydabiri/webserver/blob/master/webserver-mac.app <br/>
 
 
 Use the terminal (on mac and linx) or 
