@@ -1,0 +1,86 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" id="html" lang=""> <!--<![endif]-->
+	<head>
+		<meta charset="UTF-8">
+		<title id="title">dscram.versabit.tech</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" id="favicon" href="custom/favicon.png">
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.9.1/tachyons.min.css">
+	</head>
+	<body>
+		<!--[if lt IE 8]>
+			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+  </body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/1.1.6/mithril.min.js" ></script>
+	<script>
+		//Create Function for Playing Around Here
+		var dscram = { result: [], dictionary : [], notice: "",
+			scrambled: "", action: "DScram",
+			process: function() {
+				var word = "";
+				var result = [];
+				dscram.action = "Processing..."
+
+				for (var i = 0; i < dscram.dictionary.length; i++) {
+					var found = [];
+					word = dscram.dictionary[i];
+					if (word.length == dscram.scrambled.length){
+						var add = true
+						for (var ix = 0; ix < word.length ; ix++) {
+							if(dscram.scrambled.indexOf(word.charAt(ix))<0){
+								add = false
+							} else {
+								found.push(word.charAt(ix))
+							}
+						}
+						if (add) {
+							result.push(word)
+						}
+					}
+				}
+				dscram.result = result;
+				dscram.action = "DScram";
+			},
+			oncreate: function() {
+				m.request({method:'GET', url: "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt",
+					deserialize: function(value) {return value}}).then(function(response){
+					dscram.dictionary = response.replace(/^\s+|\s+$/g, '').split(/\s+/);
+					dscram.notice = "Wordlist Size is "+dscram.dictionary.length.toLocaleString();
+				});
+			},
+	    view: function() { return m("main", {class: "pa4 black-80"},
+				m("form", {class: "measure center"},
+					m("fieldset", {class: "ba b--transparent ph0 mh0"}, [
+						m("legend", {class: "f4 fw6 ph0 mh0"}, "DScram"),
+						m("div", {class: "mt3"}, [
+							m("label", {class:"db fw6 lh-copy f6"},"Scrambled Text"),
+							m("input", {class:"pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100", type:"text", readonly:dscram.scrambledDisabled,
+							oninput: m.withAttr("value", function(value) {dscram.scrambled = value})
+						}),
+						]),
+						m("div", {class: "mv3"}, [
+							m("span", {class:"b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib", onclick:dscram.process},dscram.action),
+						]),
+						m("div",[
+							m("label", {class:"db fw6 lh-copy f6"},"De-Scrambled Text"),
+							m("textarea", {class:"pa2 h5 input-reset ba bg-black white w-100", type:"text", readonly:"readonly", value:dscram.result}),
+							m("small", {class:"mv3"},dscram.notice),
+						]),
+					])
+				)
+			)}
+		}
+
+		var root = document.body
+		m.mount(root, dscram)
+
+	</script>
+</html>
